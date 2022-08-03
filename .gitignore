@@ -142,3 +142,5 @@ PackageBackups/
 
 # UWP builds
 /UWP/*
+results
+venv
