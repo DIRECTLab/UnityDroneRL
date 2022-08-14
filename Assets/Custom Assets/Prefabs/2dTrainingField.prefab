@@ -847,7 +847,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6821314572225870389}
   m_Layer: 0
-  m_Name: TrainingField
+  m_Name: 2dTrainingField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
