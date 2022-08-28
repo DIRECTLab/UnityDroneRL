@@ -27,8 +27,9 @@ public class DroneMovementAgent : Agent
         float moveX = vectorActions[0];
         float moveZ = vectorActions[1];
         float moveY = vectorActions[2];
-
         transform.localPosition += new Vector3(moveX, moveY, moveZ) * Time.deltaTime * moveSpeed;
+
+        SetReward(-Vector3.Distance(transform.localPosition, targetTransform.localPosition));
     }
 
     public override void Heuristic(float[] actionsOut)
@@ -44,9 +45,7 @@ public class DroneMovementAgent : Agent
         {
             SetReward(1f);
         }
-        else if (other.tag == "Wall") { 
-            SetReward(-1f);
-        }
         EndEpisode();
     }
+
 }
