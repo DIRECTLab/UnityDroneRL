@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 
 public class MovementAgent : Agent
 {
@@ -22,18 +23,18 @@ public class MovementAgent : Agent
         sensor.AddObservation(targetTransform.localPosition);
     }
 
-    public override void OnActionReceived(float[] vectorActions)
+    public override void OnActionReceived(ActionBuffers actions)
     {
-        float moveX = vectorActions[0];
+        /*float moveX = vectorActions[0];
         float moveZ = vectorActions[1];
 
-        transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * moveSpeed;
+        transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * moveSpeed;*/
     }
 
-    public override void Heuristic(float[] actionsOut)
+    public override void Heuristic(in ActionBuffers actionsOut)
     {
-        actionsOut[1] = Input.GetAxisRaw("Horizontal");
-        actionsOut[0] = -Input.GetAxisRaw("Vertical");
+        /*actionsOut[1] = Input.GetAxisRaw("Horizontal");
+        actionsOut[0] = -Input.GetAxisRaw("Vertical");*/
     }
 
     private void OnTriggerEnter(Collider other)

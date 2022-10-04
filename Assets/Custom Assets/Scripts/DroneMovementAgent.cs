@@ -4,6 +4,7 @@ using UnityEngine;
 
 using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
+using Unity.MLAgents.Actuators;
 
 public class DroneMovementAgent : Agent
 {
@@ -22,21 +23,21 @@ public class DroneMovementAgent : Agent
         sensor.AddObservation(targetTransform.localPosition);
     }
 
-    public override void OnActionReceived(float[] vectorActions)
+    public override void OnActionReceived(ActionBuffers actions)
     {
-        float moveX = vectorActions[0];
+        /*float moveX = vectorActions[0];
         float moveZ = vectorActions[1];
         float moveY = vectorActions[2];
         transform.localPosition += new Vector3(moveX, moveY, moveZ) * Time.deltaTime * moveSpeed;
 
-        SetReward(-Vector3.Distance(transform.localPosition, targetTransform.localPosition));
+        SetReward(-Vector3.Distance(transform.localPosition, targetTransform.localPosition));*/
     }
 
-    public override void Heuristic(float[] actionsOut)
+    public override void Heuristic(in ActionBuffers actionsOut)
     {
-        actionsOut[2] = -Input.GetAxisRaw("UpDown");
+       /* actionsOut[2] = -Input.GetAxisRaw("UpDown");
         actionsOut[1] = Input.GetAxisRaw("Horizontal");
-        actionsOut[0] = -Input.GetAxisRaw("Vertical");
+        actionsOut[0] = -Input.GetAxisRaw("Vertical");*/
     }
 
     private void OnTriggerEnter(Collider other)
