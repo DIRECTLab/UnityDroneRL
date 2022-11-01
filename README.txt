@@ -1,8 +1,13 @@
 Go through the instalation process for unity, and the unity packages as described 
 here: https://github.com/Unity-Technologies/ml-agents/blob/release_19_docs/docs/Installation.md
 
-Python packages are outlined in the requirements.txt file, use this to set up
-the virtual environment.
+python installing 
+	py -3.7 -m venv venv
+	venv\Scripts\activatepy
+	pip install --upgrade pip
+	pip3 install mlagents
+ 	pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu117
+	pip install importlib-metadata==4.4
 
 Once all that is done you can open the project from unity, navigate to the example-rl scene and open it.
 
@@ -13,3 +18,4 @@ can be seen in the log files, or as output in the command line.
 
 Run ml-agents --help to see other parameters you can add to the learning process, like config files
 and output logs.
+
