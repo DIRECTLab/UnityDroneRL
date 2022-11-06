@@ -25,19 +25,21 @@ public class DroneMovementAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        /*float moveX = vectorActions[0];
-        float moveZ = vectorActions[1];
-        float moveY = vectorActions[2];
+        float moveX = actions.ContinuousActions[0];
+        float moveZ = actions.ContinuousActions[1];
+        float moveY = actions.ContinuousActions[2];
         transform.localPosition += new Vector3(moveX, moveY, moveZ) * Time.deltaTime * moveSpeed;
 
-        SetReward(-Vector3.Distance(transform.localPosition, targetTransform.localPosition));*/
+        SetReward(-Vector3.Distance(transform.localPosition, targetTransform.localPosition));
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-       /* actionsOut[2] = -Input.GetAxisRaw("UpDown");
-        actionsOut[1] = Input.GetAxisRaw("Horizontal");
-        actionsOut[0] = -Input.GetAxisRaw("Vertical");*/
+
+        var continuousActionsOut = actionsOut.ContinuousActions;
+        continuousActionsOut[2] = -Input.GetAxisRaw("UpDown");
+        continuousActionsOut[1] = Input.GetAxisRaw("Horizontal");
+        continuousActionsOut[0] = -Input.GetAxisRaw("Vertical");
     }
 
     private void OnTriggerEnter(Collider other)

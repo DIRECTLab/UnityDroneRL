@@ -25,16 +25,18 @@ public class MovementAgent : Agent
 
     public override void OnActionReceived(ActionBuffers actions)
     {
-        /*float moveX = vectorActions[0];
-        float moveZ = vectorActions[1];
+        float moveX = actions.ContinuousActions[0];
+        float moveZ = actions.ContinuousActions[1];
 
-        transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * moveSpeed;*/
+        transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * moveSpeed;
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-        /*actionsOut[1] = Input.GetAxisRaw("Horizontal");
-        actionsOut[0] = -Input.GetAxisRaw("Vertical");*/
+
+        var continuousActionsOut = actionsOut.ContinuousActions;
+        continuousActionsOut[1] = Input.GetAxisRaw("Horizontal");
+        continuousActionsOut[0] = -Input.GetAxisRaw("Vertical");
     }
 
     private void OnTriggerEnter(Collider other)
