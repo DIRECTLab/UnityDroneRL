@@ -9,7 +9,7 @@ using Unity.MLAgents.Actuators;
 public class VisionMovementAgent : Agent
 {
     float moveSpeed = 5;
-    float rotSpeed = 90;
+    float rotSpeed = 180;
     [SerializeField] private Transform targetTransform = null;
 
     public override void OnEpisodeBegin()
@@ -65,12 +65,13 @@ public class VisionMovementAgent : Agent
     {
             float moveX = actions.ContinuousActions[0];
             float rot = actions.ContinuousActions[1];
-        Vector3 rotation = new Vector3(0, rot, 0) * Time.deltaTime * rotSpeed;
+            Vector3 rotation = new Vector3(0, rot, 0) * Time.deltaTime * rotSpeed;
 
             transform.Rotate(rotation, Space.World);
             transform.localPosition += transform.forward * moveX * Time.deltaTime * moveSpeed;
 
-            SetReward(-Vector3.Distance(transform.localPosition, targetTransform.localPosition));
+            AddReward(0f);
+            AddReward(-Vector3.Distance(transform.localPosition, targetTransform.localPosition));
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -85,9 +86,11 @@ public class VisionMovementAgent : Agent
     {
         if (other.tag == "Goal")
         {
-            SetReward(1f);
+            SetReward(10000f);
+
         }
         EndEpisode();
+
     }
 
 }
