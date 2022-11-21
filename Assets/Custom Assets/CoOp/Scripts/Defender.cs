@@ -6,47 +6,54 @@ using Unity.MLAgents;
 using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
 
-public class MovementAgent : Agent
+public class Defender : Agent
 {
-
     float moveSpeed = 5;
-    [SerializeField] private Transform targetTransform = null;
+    float rotSpeed = 180;
+
 
     public override void OnEpisodeBegin()
     {
         transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
+
     }
 
     public override void CollectObservations(VectorSensor sensor)
     {
-        sensor.AddObservation(transform.localPosition);
-        sensor.AddObservation(targetTransform.localPosition);
     }
 
     public override void OnActionReceived(ActionBuffers actions)
     {
         float moveX = actions.ContinuousActions[0];
         float moveZ = actions.ContinuousActions[1];
+        float moveY = actions.ContinuousActions[2];
+        float rot = actions.ContinuousActions[3];
 
-        transform.localPosition += new Vector3(moveX, 0, moveZ) * Time.deltaTime * moveSpeed;
+        Vector3 rotation = new Vector3(0, rot, 0) * Time.deltaTime * rotSpeed;
+        transform.Rotate(rotation, Space.World);
+
+        var transformVector = new Vector3(moveX, moveY, moveZ) * Time.deltaTime * moveSpeed;
+        transform.Translate(transformVector, Space.Self);
+
+        AddReward(-0.0001f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
-
         var continuousActionsOut = actionsOut.ContinuousActions;
-        continuousActionsOut[1] = Input.GetAxisRaw("Horizontal");
-        continuousActionsOut[0] = -Input.GetAxisRaw("Vertical");
+        continuousActionsOut[3] = -Input.GetAxisRaw("Rotation");
+        continuousActionsOut[2] = -Input.GetAxisRaw("UpDown");
+        continuousActionsOut[1] = Input.GetAxisRaw("Vertical");
+        continuousActionsOut[0] = Input.GetAxisRaw("Horizontal");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Goal")
         {
-            SetReward(1f);
-        }
-        else if (other.tag == "Wall") { 
-            SetReward(-1f);
+            SetReward(10f);
+
         }
         EndEpisode();
     }
