@@ -4,7 +4,7 @@ using UnityEngine;
 
 using Unity.MLAgents;
 
-public class Atacker : MonoBehaviour
+public class Attacker : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()

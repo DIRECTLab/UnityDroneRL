@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Unity.MLAgents;
-using Unity.MLAgents.Sensors;
 using Unity.MLAgents.Actuators;
+using UnityEngine.Events;
 
 public class Defender : Agent
 {
@@ -12,15 +12,18 @@ public class Defender : Agent
     float rotSpeed = 180;
 
 
-    public override void OnEpisodeBegin()
-    {
-        transform.localPosition = Vector3.zero;
-        transform.localRotation = Quaternion.identity;
+    private Collider m_col;
 
-    }
 
-    public override void CollectObservations(VectorSensor sensor)
+    [System.Serializable]
+    public class TriggerEvent : UnityEvent<Collider, Collider>{}
+
+    [Header("Trigger Callbacks")]
+    public TriggerEvent onTriggerEnterEvent = new TriggerEvent();
+
+    private void Awake()
     {
+        m_col = GetComponent<Collider>();
     }
 
     public override void OnActionReceived(ActionBuffers actions)
@@ -35,8 +38,6 @@ public class Defender : Agent
 
         var transformVector = new Vector3(moveX, moveY, moveZ) * Time.deltaTime * moveSpeed;
         transform.Translate(transformVector, Space.Self);
-
-        AddReward(-0.0001f);
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -48,13 +49,9 @@ public class Defender : Agent
         continuousActionsOut[0] = Input.GetAxisRaw("Horizontal");
     }
 
+    //calls the controllers on trigger event
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Goal")
-        {
-            SetReward(10f);
-
-        }
-        EndEpisode();
+        onTriggerEnterEvent.Invoke(m_col, other);
     }
 }

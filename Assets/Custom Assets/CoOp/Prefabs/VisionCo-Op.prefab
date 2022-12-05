@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3445831775905237260}
+  - component: {fileID: 7005171268740405495}
   m_Layer: 0
   m_Name: VisionCo-Op
   m_TagString: Untagged
@@ -33,6 +34,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7005171268740405495
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3097929057467726626}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8eb4ed2c7f286d44db5768bc74120e35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DefenderList:
+  - Agent: {fileID: 3995674971734782264}
+    StartingPos: {x: 0, y: 0, z: 0}
+    StartingRot: {x: 0, y: 0, z: 0, w: 0}
+    Rb: {fileID: 0}
+  AttackerList:
+  - Agent: {fileID: 7787496769213889164}
+    StartingPos: {x: 0, y: 0, z: 0}
+    StartingRot: {x: 0, y: 0, z: 0, w: 0}
+    Rb: {fileID: 0}
+  MaxEnvironmentSteps: 25000
 --- !u!1 &3434594542022404218
 GameObject:
   m_ObjectHideFlags: 0
@@ -168,7 +192,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4347063823878973607, guid: 50679aaeebc2b5548819e0abf6e94e3a, type: 3}
       propertyPath: m_Name
-      value: Enemy
+      value: Attacker
       objectReference: {fileID: 0}
     - target: {fileID: 4936396725618007724, guid: 50679aaeebc2b5548819e0abf6e94e3a, type: 3}
       propertyPath: m_RootOrder
@@ -221,6 +245,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4936396725618007724, guid: 50679aaeebc2b5548819e0abf6e94e3a, type: 3}
   m_PrefabInstance: {fileID: 270775824139471371}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7787496769213889164 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8057856864876376199, guid: 50679aaeebc2b5548819e0abf6e94e3a, type: 3}
+  m_PrefabInstance: {fileID: 270775824139471371}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbd1f40201658b541bf0fcc9bc67f5ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8695173880569129719
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -272,6 +307,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7005171268740405495}
+    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DefenderCollision
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: CoOpVisionController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 7556562852231993507, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
       propertyPath: m_Name
       value: Defender
@@ -283,3 +346,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4340717822282444709, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
   m_PrefabInstance: {fileID: 8695173880569129719}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3995674971734782264 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+  m_PrefabInstance: {fileID: 8695173880569129719}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e79428423eb5cdb449ed3182fe8706fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
