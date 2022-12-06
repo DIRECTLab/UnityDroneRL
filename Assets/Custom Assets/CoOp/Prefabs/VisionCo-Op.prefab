@@ -95,9 +95,6 @@ MonoBehaviour:
     Rb: {fileID: 0}
   AttackerList:
   - Agent: {fileID: 7787496769213889164}
-    StartingPos: {x: 0, y: 0, z: 0}
-    StartingRot: {x: 0, y: 0, z: 0, w: 0}
-    Rb: {fileID: 0}
   MaxEnvironmentSteps: 25000
   bounds:
     m_Center: {x: 0, y: 0, z: 0}
@@ -1022,45 +1019,9 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 7005171268740405495}
-    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DefenderCollision
-      objectReference: {fileID: 0}
-    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CoOpVisionController, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 5753361326386207695, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: onTriggerEnterEvent.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 7556562852231993507, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
       propertyPath: m_Name
       value: Defender
-      objectReference: {fileID: 0}
-    - target: {fileID: 8022346004264190944, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: m_BehaviorName
-      value: CoOpDefender
-      objectReference: {fileID: 0}
-    - target: {fileID: 8022346004264190944, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
-      propertyPath: m_BrainParameters.NumStackedVectorObservations
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}

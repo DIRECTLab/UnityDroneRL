@@ -246,14 +246,14 @@ GameObject:
   m_Component:
   - component: {fileID: 4340717822282444709}
   - component: {fileID: 7943632894892643760}
-  - component: {fileID: 7700485025418827053}
+  - component: {fileID: 4822082201591772779}
   - component: {fileID: 8022346004264190944}
   - component: {fileID: 5753361326386207695}
   - component: {fileID: 928797012756583305}
   - component: {fileID: 4811661618996390155}
   m_Layer: 0
   m_Name: Defender
-  m_TagString: Untagged
+  m_TagString: Defender
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -283,12 +283,12 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7556562852231993507}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 1.1, y: 1.1, z: 1.1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &7700485025418827053
+--- !u!54 &4822082201591772779
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Model: {fileID: 0}
   m_InferenceDevice: 0
   m_BehaviorType: 0
-  m_BehaviorName: CoOpVisionMovement
+  m_BehaviorName: CoOpDefender
   TeamId: 0
   m_UseChildSensors: 1
   m_UseChildActuators: 1
@@ -350,6 +350,9 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 0
+  onTriggerEnterEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &928797012756583305
 MonoBehaviour:
   m_ObjectHideFlags: 0
