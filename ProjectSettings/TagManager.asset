@@ -6,11 +6,14 @@ TagManager:
   tags:
   - Wall
   - Goal
+  - Defender
+  - Attacker
+  - Controller
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Controller
   - Water
   - UI
   - 
