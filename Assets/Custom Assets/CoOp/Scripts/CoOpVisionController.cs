@@ -31,6 +31,7 @@ public class CoOpVisionController : MonoBehaviour
 
     private int m_NumberOfRemainingDefenders;
 
+    public Collider colliderBounds;
 
     [HideInInspector]
     public Bounds bounds;
@@ -41,14 +42,14 @@ public class CoOpVisionController : MonoBehaviour
     void Start()
     {
         //gets the bounds then disables bounds collider so it doesnt get in the way
-        bounds = gameObject.GetComponent<Collider>().bounds;
+        bounds = colliderBounds.bounds;
         gameObject.GetComponent<Collider>().enabled = false;
 
         //sets up defender group
         m_DefenderGroup = new SimpleMultiAgentGroup();
         foreach (var defender in DefenderList) { 
-            defender.StartingPos = defender.Agent.transform.position;
-            defender.StartingRot = defender.Agent.transform.rotation;
+            defender.StartingPos = defender.Agent.transform.localPosition;
+            defender.StartingRot = defender.Agent.transform.localRotation;
             defender.Rb = defender.Agent.GetComponent<Rigidbody>();
              
             m_DefenderGroup.RegisterAgent(defender.Agent);
@@ -69,7 +70,7 @@ public class CoOpVisionController : MonoBehaviour
         }
 
         //Hurry Up Penalty
-        m_DefenderGroup.AddGroupReward(-0.5f / MaxEnvironmentSteps);
+        m_DefenderGroup.AddGroupReward(-0.25f / MaxEnvironmentSteps);
     }
 
    //invoked by defenders upon collision with object
@@ -77,7 +78,7 @@ public class CoOpVisionController : MonoBehaviour
         //if collide with attacker, win
         if (collided.tag == "Attacker")
         {
-            m_DefenderGroup.AddGroupReward(10);
+            m_DefenderGroup.AddGroupReward(1);
             m_DefenderGroup.EndGroupEpisode();
             ResetScene();
         }
@@ -118,7 +119,6 @@ public class CoOpVisionController : MonoBehaviour
         var randomSpawnPos = Vector3.zero;
         while (foundNewSpawnLocation == false)
         {
-
             var marginMultiplier = .9f;
             var randomPosX = Random.Range(-bounds.extents.x * marginMultiplier, bounds.extents.x * marginMultiplier);
             var randomPosY = Random.Range(1, bounds.extents.y * 2 * marginMultiplier);
@@ -142,7 +142,8 @@ public class CoOpVisionController : MonoBehaviour
             var pos = defender.StartingPos;
             var rot = defender.StartingRot;
 
-            defender.Agent.transform.SetPositionAndRotation(pos, rot);
+            defender.Agent.transform.localPosition = pos; 
+            defender.Agent.transform.localRotation = rot;
 
             defender.Rb.velocity = Vector3.zero;
             defender.Rb.angularVelocity = Vector3.zero;
@@ -156,7 +157,7 @@ public class CoOpVisionController : MonoBehaviour
 
         foreach (var attacker in AttackerList) {
             var pos = GetRandomSpawnPos();
-            attacker.Agent.transform.position = pos;
+            attacker.Agent.transform.localPosition = pos;
         }
     }
 }

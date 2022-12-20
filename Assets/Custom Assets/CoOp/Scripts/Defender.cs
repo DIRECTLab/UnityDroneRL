@@ -8,15 +8,15 @@ using UnityEngine.Events;
 
 public class Defender : Agent
 {
-    float moveSpeed = 5;
-    float rotSpeed = 180;
+    float moveSpeed = 10;
+    float rotSpeed = 360;
 
 
     private Collider m_col;
 
 
     [System.Serializable]
-    public class TriggerEvent : UnityEvent<Collider, Collider>{}
+    public class TriggerEvent : UnityEvent<Collider, Collider> { }
 
     [Header("Trigger Callbacks")]
     public TriggerEvent onTriggerEnterEvent = new TriggerEvent();
@@ -55,3 +55,4 @@ public class Defender : Agent
         onTriggerEnterEvent.Invoke(m_col, other);
     }
 }
+   
