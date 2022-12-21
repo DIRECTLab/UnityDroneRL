@@ -103,6 +103,7 @@ public class CoOpVisionController : MonoBehaviour
 
             if (m_NumberOfRemainingDefenders <= 0)
             {
+                m_DefenderGroup.AddGroupReward(-1);
                 m_DefenderGroup.EndGroupEpisode();
                 ResetScene();
             }
