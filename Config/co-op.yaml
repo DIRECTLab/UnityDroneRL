@@ -12,14 +12,14 @@ behaviors:
       learning_rate_schedule: constant
     network_settings:
       normalize: false
-      hidden_units: 256
-      num_layers: 2
+      hidden_units: 512
+      num_layers: 3
       vis_encode_type: simple
     reward_signals:
       extrinsic:
         gamma: 0.99
         strength: 1.0
     keep_checkpoints: 5
-    max_steps: 15000000
+    max_steps: 25000000
     time_horizon: 64
     summary_freq: 60000
