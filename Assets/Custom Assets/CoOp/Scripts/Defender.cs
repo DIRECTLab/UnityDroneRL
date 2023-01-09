@@ -11,14 +11,15 @@ public class Defender : Drone
 
     private CoOpVisionController cont;
 
-    private void Awake()
+    private new void Awake()
     {
         base.Awake();
         cont = GetComponentInParent<CoOpVisionController>();
+        AdjustSpeed("defender_speed");
     }
 
     
-
+    //reward the defender for seeing and being close to an attacker
     public void FixedUpdate()
     {
         float shortestDistance = -1;

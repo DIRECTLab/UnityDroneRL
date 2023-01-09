@@ -22,6 +22,12 @@ public class CoOpVisionController : MonoBehaviour
     public class AttackerInfo
     {
         public Attacker Agent;
+        [HideInInspector]
+        public Vector3 StartingPos;
+        [HideInInspector]
+        public Quaternion StartingRot;
+        [HideInInspector]
+        public Rigidbody Rb;
     }
     public List<AttackerInfo> AttackerList = new List<AttackerInfo>();
 
@@ -29,14 +35,16 @@ public class CoOpVisionController : MonoBehaviour
     public int MaxEnvironmentSteps = 25000;
     private int m_ResetTimer;
 
-    private int m_NumberOfRemainingDefenders;
-
     public Collider colliderBounds;
 
     [HideInInspector]
     public Bounds bounds;
 
+    private int m_NumberOfRemainingDefenders;
     private SimpleMultiAgentGroup m_DefenderGroup;
+
+    private int m_NumberOfRemainingAttackers;
+    private SimpleMultiAgentGroup m_AttackerGroup;
 
     // Start is called before the first frame update
     void Start()
@@ -55,6 +63,14 @@ public class CoOpVisionController : MonoBehaviour
             m_DefenderGroup.RegisterAgent(defender.Agent);
         }
 
+        m_AttackerGroup = new SimpleMultiAgentGroup();
+        foreach (var attacker in AttackerList) { 
+            attacker.StartingPos = attacker.Agent.transform.localPosition;
+            attacker.StartingRot = attacker.Agent.transform.localRotation;
+            attacker.Rb = attacker.Agent.GetComponent<Rigidbody>();
+            m_AttackerGroup.RegisterAgent(attacker.Agent);
+        }
+
         ResetScene();
     }
 
@@ -66,50 +82,57 @@ public class CoOpVisionController : MonoBehaviour
         if ( (m_ResetTimer >= MaxEnvironmentSteps && MaxEnvironmentSteps > 0))
         {
             m_DefenderGroup.GroupEpisodeInterrupted();
+            m_AttackerGroup.GroupEpisodeInterrupted();
+            ResetScene();
+        }
+
+        if (m_NumberOfRemainingAttackers <= 0 || m_NumberOfRemainingDefenders <= 0) {
+            //if the attackers are all gone,  then set status for defenders to 1
+            int defendersSucceed = m_NumberOfRemainingAttackers <= 0 ? 1: -1;
+
+            //if defenders succeed they get +1 and attackers get -1
+            //if defenders fail they get -1 and attackers get +1
+            m_DefenderGroup.AddGroupReward(defendersSucceed);
+            m_AttackerGroup.AddGroupReward(-defendersSucceed);
+
+
+            m_DefenderGroup.EndGroupEpisode();
+            m_AttackerGroup.EndGroupEpisode();
+
             ResetScene();
         }
 
         //Hurry Up Penalty
         m_DefenderGroup.AddGroupReward(-0.25f / MaxEnvironmentSteps);
+
+        //Stay Alive Reward
+        m_AttackerGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);
+
     }
 
    //invoked by defenders upon collision with object
-    public void DefenderCollision(Collider collider, Collider collided) {
-        //if collide with attacker, win
-        if (collided.tag == "Attacker")
-        {
-            m_DefenderGroup.AddGroupReward(1);
-            m_DefenderGroup.EndGroupEpisode();
-            ResetScene();
-        }
-        //if collide with wall, remove self
-        else if (collided.tag == "Wall")
+    public void Collision(Collider collider, Collider collided) {
+        //if collide with wall attacker or defender, remove self
+         if (collided.tag == "Wall" || collided.tag == "Attacker" || collided.tag == "Defender")
         {
             Remove(collider);
-        }
-        //if collide with other defender remove both of them
-        else if (collided.tag == "Defender") {
-            Remove(collider);
-            Remove(collided);
         }
     }
 
     public void Remove(Collider collider)
     {
-        GameObject go = collider.gameObject;
+        GameObject obj = collider.gameObject;
 
-        if (go.activeSelf) { 
-            m_NumberOfRemainingDefenders--;
-
-            if (m_NumberOfRemainingDefenders <= 0)
+        if (obj.activeSelf) {
+            if (collider.tag == "Attacker")
             {
-                m_DefenderGroup.AddGroupReward(-1);
-                m_DefenderGroup.EndGroupEpisode();
-                ResetScene();
+                m_NumberOfRemainingAttackers --;
             }
-            else { 
-                go.SetActive(false);
+            else if (collider.tag == "Defender")
+            {
+                m_NumberOfRemainingDefenders--;
             }
+            obj.SetActive(false);
         }
     }
 
@@ -138,6 +161,7 @@ public class CoOpVisionController : MonoBehaviour
     public void ResetScene() { 
         m_ResetTimer = 0;
         m_NumberOfRemainingDefenders = DefenderList.Count;
+        m_NumberOfRemainingAttackers = AttackerList.Count;
 
         foreach (var defender in DefenderList) {
             var pos = defender.StartingPos;
@@ -158,7 +182,19 @@ public class CoOpVisionController : MonoBehaviour
 
         foreach (var attacker in AttackerList) {
             var pos = GetRandomSpawnPos();
+            var rot = attacker.StartingRot;
+
             attacker.Agent.transform.localPosition = pos;
+            attacker.Agent.transform.localRotation = rot;
+
+            attacker.Rb.velocity = Vector3.zero;
+            attacker.Rb.angularVelocity = Vector3.zero;
+
+            if (!attacker.Agent.gameObject.activeSelf)
+            { 
+                attacker.Agent.gameObject.SetActive(true);
+                m_AttackerGroup.RegisterAgent(attacker.Agent);
+            }
         }
     }
 }
