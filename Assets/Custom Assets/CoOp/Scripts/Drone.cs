@@ -8,11 +8,14 @@ using UnityEngine.Events;
 
 public class Drone : Agent
 {
-    protected float moveSpeed = 15;
+    protected float moveForce = 1;
     protected float rotSpeed = 360;
 
     private Collider m_col;
     protected Rigidbody m_rigidBody;
+
+    protected Vector3 moveAmount;
+    protected Quaternion rotateAmount;
 
     [System.Serializable]
     public class TriggerEvent : UnityEvent<Collider, Collider> { }
@@ -33,16 +36,14 @@ public class Drone : Agent
         float moveY = actions.ContinuousActions[2];
         float rot = actions.ContinuousActions[3];
 
-        Vector3 rotation = new Vector3(0, rot, 0) * Time.deltaTime * rotSpeed;
-        transform.Rotate(rotation, Space.World);
-        //m_rigidBody.MoveRotation(rotation);
+        rotateAmount = Quaternion.Euler(new Vector3(0, rot, 0) * rotSpeed * Time.fixedDeltaTime);
+        moveAmount = transform.TransformDirection(new Vector3(moveX, moveY, moveZ)* moveForce);
+    }
 
-        var transformVector = new Vector3(moveX, moveY, moveZ) * Time.deltaTime * moveSpeed;
-        //var newPos = transform.position + transformVector;
-        //m_rigidBody.MovePosition(newPos0)
-        transform.Translate(transformVector, Space.Self);
-
-
+    protected void FixedUpdate()
+    {
+        m_rigidBody.MoveRotation(m_rigidBody.rotation * rotateAmount);
+        m_rigidBody.AddForce(moveAmount, ForceMode.VelocityChange);
     }
 
     //calls the controllers on trigger event
@@ -53,7 +54,7 @@ public class Drone : Agent
 
     protected void AdjustSpeed(string parameter_name) {
         float speedAdjust = Academy.Instance.EnvironmentParameters.GetWithDefault(parameter_name, 1.0f);
-        moveSpeed *= speedAdjust;
+        moveForce *= speedAdjust;
         rotSpeed *= speedAdjust;
     }
 }

@@ -11,8 +11,10 @@ public class Attacker : Drone
         base.Awake();
         AdjustSpeed("attacker_speed");
     }
-    public void FixedUpdate()
+    public new void FixedUpdate()
     {
+        base.FixedUpdate();
+
         //as long as the attacker is alive, reward it
         AddReward(.25f);
     }

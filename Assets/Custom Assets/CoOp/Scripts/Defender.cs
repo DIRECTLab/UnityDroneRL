@@ -20,8 +20,10 @@ public class Defender : Drone
 
     
     //reward the defender for seeing and being close to an attacker
-    public void FixedUpdate()
+    public new void FixedUpdate()
     {
+        base.FixedUpdate();
+
         float shortestDistance = -1;
         float highestAngleVal = -1;
 
@@ -45,11 +47,8 @@ public class Defender : Drone
         float maxDistance = Vector3.Distance(cont.bounds.extents, -cont.bounds.extents);
         if (highestAngleVal != -1 && shortestDistance != -1)
         {
-            //Debug.Log("Distance " + shortestDistance);
-            //Debug.Log("Distance Val " + weightedFlip(shortestDistance, maxDistance));
             AddReward(utils.weightedFlip(shortestDistance, maxDistance) * .5f);
 
-            //Debug.Log("Angle " + highestAngleVal);
             AddReward(highestAngleVal * .5f);
         }
     }
