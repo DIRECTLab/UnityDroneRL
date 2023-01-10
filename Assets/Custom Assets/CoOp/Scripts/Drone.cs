@@ -42,7 +42,7 @@ public class Drone : Agent
 
     protected void FixedUpdate()
     {
-        m_rigidBody.MoveRotation(m_rigidBody.rotation * rotateAmount);
+        m_rigidBody.MoveRotation((m_rigidBody.rotation * rotateAmount).normalized);
         m_rigidBody.AddForce(moveAmount, ForceMode.VelocityChange);
     }
 
