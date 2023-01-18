@@ -28,7 +28,14 @@ public class Defender : Drone
 
         foreach (Attacker attacker in cont.GetAttackers())
         {
-
+            Vector3 pos = utils.addNoise(attacker.transform.position);
+            
+            float[] floatPos = new float[3];
+            floatPos[0] = pos.x;
+            floatPos[1] = pos.y;
+            floatPos[2] = pos.z;
+            
+            m_BufferSensor.AppendObservation(floatPos);
         }
     }
 
