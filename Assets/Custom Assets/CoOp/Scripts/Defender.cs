@@ -5,6 +5,7 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using UnityEngine.Events;
+using Unity.MLAgents.Sensors;
 
 public class Defender : Drone
 {
@@ -18,7 +19,13 @@ public class Defender : Drone
         AdjustSpeed("defender_speed");
     }
 
-    
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        base.CollectObservations(sensor);
+
+    }
+
     //reward the defender for seeing and being close to an attacker
     public new void FixedUpdate()
     {
@@ -27,10 +34,8 @@ public class Defender : Drone
         float shortestDistance = -1;
         float highestAngleVal = -1;
 
-        foreach (CoOpVisionController.AttackerInfo a in cont.AttackerList)
-        {
-            Attacker attacker = a.Agent;
-
+        foreach (Attacker attacker in cont.GetAttackers())
+        {           
             float distance = Vector3.Distance(transform.localPosition, attacker.transform.localPosition);
             if (shortestDistance == -1 || distance < shortestDistance)
             {

@@ -5,13 +5,14 @@ using UnityEngine;
 using Unity.MLAgents;
 using Unity.MLAgents.Actuators;
 using UnityEngine.Events;
+using Unity.MLAgents.Sensors;
 
 public class Drone : Agent
 {
     protected float moveForce = 1;
     protected float rotSpeed = 360;
 
-    private Collider m_col;
+    protected Collider m_col;
     protected Rigidbody m_rigidBody;
 
     protected Vector3 moveAmount;
@@ -27,6 +28,18 @@ public class Drone : Agent
     {
         m_col = GetComponent<Collider>();
         m_rigidBody = GetComponent<Rigidbody>();
+    }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        base.CollectObservations(sensor);
+        //7 observations overall
+
+        //position and rotation observations 4 overall
+        sensor.AddObservation(gameObject.transform.position);
+        sensor.AddObservation(gameObject.transform.rotation.y);
+        //velocity observations 3 overall
+        sensor.AddObservation(m_rigidBody.velocity);
     }
 
     public override void OnActionReceived(ActionBuffers actions)

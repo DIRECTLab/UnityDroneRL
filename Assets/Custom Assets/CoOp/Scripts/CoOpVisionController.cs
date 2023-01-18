@@ -158,16 +158,18 @@ public class CoOpVisionController : MonoBehaviour
         return randomSpawnPos;
     }
 
-    public void ResetScene() { 
+    public void ResetScene()
+    {
         m_ResetTimer = 0;
         m_NumberOfRemainingDefenders = DefenderList.Count;
         m_NumberOfRemainingAttackers = AttackerList.Count;
 
-        foreach (var defender in DefenderList) {
+        foreach (var defender in DefenderList)
+        {
             var pos = defender.StartingPos;
             var rot = defender.StartingRot;
 
-            defender.Agent.transform.localPosition = pos; 
+            defender.Agent.transform.localPosition = pos;
             defender.Agent.transform.localRotation = rot;
 
             defender.Rb.velocity = Vector3.zero;
@@ -180,7 +182,8 @@ public class CoOpVisionController : MonoBehaviour
             }
         }
 
-        foreach (var attacker in AttackerList) {
+        foreach (var attacker in AttackerList)
+        {
             var pos = GetRandomSpawnPos();
             var rot = attacker.StartingRot;
 
@@ -191,10 +194,21 @@ public class CoOpVisionController : MonoBehaviour
             attacker.Rb.angularVelocity = Vector3.zero;
 
             if (!attacker.Agent.gameObject.activeSelf)
-            { 
+            {
                 attacker.Agent.gameObject.SetActive(true);
                 m_AttackerGroup.RegisterAgent(attacker.Agent);
             }
         }
+    }
+
+    public List<Attacker> GetAttackers() { 
+        List<Attacker> attakers = new List<Attacker>();
+        foreach (var attackerInfo in AttackerList) {
+            var attacker = attackerInfo.Agent;
+            if (attacker.enabled) { 
+                attakers.Add(attacker);
+            }
+        }
+        return attakers;
     }
 }
