@@ -11,11 +11,13 @@ public class Defender : Drone
 {
 
     private CoOpVisionController cont;
+    private BufferSensorComponent m_BufferSensor;
 
     private new void Awake()
     {
         base.Awake();
         cont = GetComponentInParent<CoOpVisionController>();
+        m_BufferSensor = GetComponent<BufferSensorComponent>();
         AdjustSpeed("defender_speed");
     }
 
@@ -24,6 +26,10 @@ public class Defender : Drone
     {
         base.CollectObservations(sensor);
 
+        foreach (Attacker attacker in cont.GetAttackers())
+        {
+
+        }
     }
 
     //reward the defender for seeing and being close to an attacker

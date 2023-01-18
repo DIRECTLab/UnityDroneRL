@@ -34,4 +34,14 @@ public static class utils
 
         return 0;
     }
+
+    private static float randomNoise(float maxNoise)
+    {
+        return Random.Range(-maxNoise, maxNoise);
+    }
+
+    public static Vector3 addNoise(Vector3 pos, float maxNoise = .1f) {
+        Vector3 noise = new Vector3(randomNoise(maxNoise), randomNoise(maxNoise), randomNoise(maxNoise));
+        return pos + noise;
+    }
 }

@@ -36,7 +36,8 @@ public class Drone : Agent
         //7 observations overall
 
         //position and rotation observations 4 overall
-        sensor.AddObservation(gameObject.transform.position);
+        //add noise to position observation
+        sensor.AddObservation(utils.addNoise(gameObject.transform.position));
         sensor.AddObservation(gameObject.transform.rotation.y);
         //velocity observations 3 overall
         sensor.AddObservation(m_rigidBody.velocity);

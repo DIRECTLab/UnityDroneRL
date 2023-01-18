@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Width: 84
   m_Height: 42
   m_Grayscale: 0
-  m_ObservationType: 0
+  m_ObservationType: 1
   m_ObservationStacks: 1
   m_Compression: 1
 --- !u!114 &1089781911431018035
