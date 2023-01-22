@@ -21,32 +21,52 @@ public class Defender : Drone
         AdjustSpeed("defender_speed");
     }
 
+    private void addDrone(Drone d) {
+        Vector3 pos = utils.addNoise(d.transform.localPosition);
+
+        float[] floatPos = new float[4];
+        floatPos[0] = pos.x;
+        floatPos[1] = pos.y;
+        floatPos[2] = pos.z;
+        floatPos[3] = d is Attacker? 1: 0; //if the drone is an attacker
+
+        m_BufferSensor.AppendObservation(floatPos);
+    }
 
     public override void CollectObservations(VectorSensor sensor)
     {
         base.CollectObservations(sensor);
 
+
+        //5 observations overall
+        // 1 hot encoding of state defender or attacker 
+        //position observations 3 overall
         foreach (Attacker attacker in cont.GetAttackers())
         {
-            Vector3 pos = utils.addNoise(attacker.transform.localPosition);
-            
-            float[] floatPos = new float[3];
-            floatPos[0] = pos.x;
-            floatPos[1] = pos.y;
-            floatPos[2] = pos.z;
-            
-            m_BufferSensor.AppendObservation(floatPos);
+            addDrone(attacker);
         }
+        foreach (Defender defender in cont.GetDefenders()) {
+            if (this != defender)
+            {
+                addDrone(defender);
+            }
+            /*else {
+                Debug.Log("Me");
+            }*/
+        }
+
     }
 
-    //reward the defender for seeing and being close to an attacker
+    //punishes the defender for not seeing and being close to an attacker
     public new void FixedUpdate()
     {
         base.FixedUpdate();
 
         float shortestDistance = -1;
-        float highestAngleVal = -1;
+        float shortestAngle = -1;
 
+        //gets the best distance and angle values
+        //the angle value gets weighted between 0 and 1
         foreach (Attacker attacker in cont.GetAttackers())
         {           
             float distance = Vector3.Distance(transform.localPosition, attacker.transform.localPosition);
@@ -55,19 +75,21 @@ public class Defender : Drone
                 shortestDistance = distance;
             }
 
-            float angleVal = utils.centerAngleWeight(attacker.transform.localPosition, 30, transform);
-            if (highestAngleVal == -1 || angleVal > highestAngleVal)
+            float angleVal = utils.angle(attacker.transform.localPosition, transform);
+            if (shortestAngle == -1 || angleVal < shortestAngle)
             {
-                highestAngleVal = angleVal;
+                shortestAngle = angleVal;
             }
         }
-
         float maxDistance = Vector3.Distance(cont.bounds.extents, -cont.bounds.extents);
-        if (highestAngleVal != -1 && shortestDistance != -1)
+        if (shortestAngle != -1 && shortestDistance != -1)
         {
-            AddReward(utils.weightedFlip(shortestDistance, maxDistance) * .5f);
-
-            AddReward(highestAngleVal * .5f);
+            /*Debug.Log($"Shortest distance: {shortestDistance}");
+            Debug.Log($"Shortest distance val: {-(shortestDistance / maxDistance)}");
+            Debug.Log($"Shortest angle: {shortestAngle}");
+            Debug.Log($"Shortest distance val: {utils.centerAngleWeight(shortestAngle, 30)}");*/
+            AddReward( -(shortestDistance / maxDistance) * .5f);
+            AddReward( utils.centerAngleWeight(shortestAngle, 30) * .5f);
         }
     }
 

@@ -211,4 +211,17 @@ public class CoOpVisionController : MonoBehaviour
         }
         return attakers;
     }
+    public List<Defender> GetDefenders()
+    {
+        List<Defender> defenders = new List<Defender>();
+        foreach (var defenderInfo in DefenderList)
+        {
+            var defender = defenderInfo.Agent;
+            if (defender.enabled)
+            {
+                defenders.Add(defender);
+            }
+        }
+        return defenders;
+    }
 }

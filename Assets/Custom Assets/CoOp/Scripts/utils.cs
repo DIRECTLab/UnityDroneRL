@@ -4,7 +4,7 @@ using UnityEngine;
 
 public static class utils
 {
-    //flips a value around another value
+    /*//flips a value around another value
     //flipping 1 around 2 gives 3
     //flipping 2 around 6 gives 10
     public static float flip(float val, float flipLoc)
@@ -14,25 +14,29 @@ public static class utils
         return val + (dif * 2);
     }
 
-    //flips and weights a val between 0 and 1 (assuming its between 0 and the bound to begin with
+    //flips  a val between 0 and bound then weights to be between 0 and 1 (assuming its between 0 and the bound to begin with)
     public static float weightedFlip(float val, float bound)
     {
         return flip(val, (bound / 2)) / bound;
+    }*/
+
+    public static float angle(Vector3 target, Transform home)
+    {
+        Vector3 targetDir = target - home.localPosition;
+        return Vector3.Angle(targetDir, home.forward);
+
     }
 
-    //returns 1 if centered, and decreases towards 0 as angle approaches the bounds
-    public static float centerAngleWeight(Vector3 local_pos, float angle_bound, Transform transform)
+    //returns 0 if centered, and decreases towards -1 as angle approaches the bounds
+    public static float centerAngleWeight(float angle, float angle_bound)
     {
-        Vector3 targetDir = local_pos - transform.localPosition;
-        float angle = Vector3.Angle(targetDir, transform.forward);
-
         //if angle is within  degrees bound 
-        if (angle <= angle_bound)
+        if (angle < angle_bound)
         {
-            return weightedFlip(angle, angle_bound);
+            return - angle / angle_bound;
         }
 
-        return 0;
+        return -1;
     }
 
     private static float randomNoise(float maxNoise)
@@ -41,6 +45,8 @@ public static class utils
         return n;
     }
 
+    //adds a random amount of noise to each dimension of the position vector,
+    //returning a new vector
     public static Vector3 addNoise(Vector3 pos, float maxNoise = 0.1f) {
         Vector3 noise = new Vector3();
         noise.x = randomNoise(maxNoise);
