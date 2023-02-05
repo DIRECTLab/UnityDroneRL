@@ -88,8 +88,8 @@ public class Defender : Drone
             Debug.Log($"Shortest distance val: {-(shortestDistance / maxDistance)}");
             Debug.Log($"Shortest angle: {shortestAngle}");
             Debug.Log($"Shortest distance val: {utils.centerAngleWeight(shortestAngle, 30)}");*/
-            AddReward( -(shortestDistance / maxDistance) * .5f);
-            AddReward( utils.centerAngleWeight(shortestAngle, 30) * .5f);
+            AddReward( -(shortestDistance / maxDistance) *.5f  /cont.MaxEnvironmentSteps);
+            AddReward( utils.centerAngleWeight(shortestAngle, 30)* .5f / cont.MaxEnvironmentSteps);
         }
     }
 
@@ -100,6 +100,17 @@ public class Defender : Drone
         continuousActionsOut[2] = -Input.GetAxisRaw("UpDown");
         continuousActionsOut[1] = Input.GetAxisRaw("Vertical");
         continuousActionsOut[0] = Input.GetAxisRaw("Horizontal");
+    }
+
+    protected void OnTriggerEnter(Collider other)
+    {
+        //reward for colliding with atttacker
+        if (other.tag == "Attacker") AddReward(1);
+
+        //punishment for running into the wall ot other defenders
+        else if (other.tag == "Wall" || other.tag == "Defender") AddReward(-1);
+        base.OnTriggerEnter(other);
+
     }
 }
    

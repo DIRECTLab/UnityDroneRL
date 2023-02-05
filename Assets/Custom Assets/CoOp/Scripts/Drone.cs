@@ -61,7 +61,7 @@ public class Drone : Agent
     }
 
     //calls the controllers on trigger event
-    private void OnTriggerEnter(Collider other)
+    protected void OnTriggerEnter(Collider other)
     {        
         onTriggerEnterEvent.Invoke(m_col, other);
     }
