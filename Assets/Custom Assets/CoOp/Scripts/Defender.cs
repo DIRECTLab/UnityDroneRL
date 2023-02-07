@@ -105,10 +105,11 @@ public class Defender : Drone
     protected void OnTriggerEnter(Collider other)
     {
         //reward for colliding with atttacker
-        if (other.tag == "Attacker") AddReward(1);
+        if (other.tag == CoOpVisionSettings.attackTag) AddReward(1);
 
         //punishment for running into the wall ot other defenders
-        else if (other.tag == "Wall" || other.tag == "Defender") AddReward(-1);
+        else if (other.tag == CoOpVisionSettings.wallTag || other.tag == CoOpVisionSettings.defendTag) AddReward(-1);
+
         base.OnTriggerEnter(other);
 
     }

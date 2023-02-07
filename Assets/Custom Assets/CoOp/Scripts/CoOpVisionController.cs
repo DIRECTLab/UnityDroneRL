@@ -31,14 +31,12 @@ public class CoOpVisionController : MonoBehaviour
     }
     public List<AttackerInfo> AttackerList = new List<AttackerInfo>();
 
-    //the max reset steps and the reset timer
-    public int MaxEnvironmentSteps = 25000;
-    private int m_ResetTimer;
+    public GameObject resultDisplay;
+    private Renderer m_resultRenderer;
+    private Material m_standardResultMat;
 
     public Collider colliderBounds;
-
-    [HideInInspector]
-    public Bounds bounds;
+    [HideInInspector] public Bounds bounds;
 
     private int m_NumberOfRemainingDefenders;
     private SimpleMultiAgentGroup m_DefenderGroup;
@@ -46,12 +44,25 @@ public class CoOpVisionController : MonoBehaviour
     private int m_NumberOfRemainingAttackers;
     private SimpleMultiAgentGroup m_AttackerGroup;
 
+
+    private CoOpVisionSettings m_CoOpSettings;
+
+    //the max reset steps and the reset timer
+    [HideInInspector] public int MaxEnvironmentSteps;
+    private int m_ResetTimer;
+
     // Start is called before the first frame update
     void Start()
     {
+        m_CoOpSettings = FindObjectOfType<CoOpVisionSettings>();
+        MaxEnvironmentSteps = m_CoOpSettings.MaxEnvironmentSteps;
+
         //gets the bounds then disables bounds collider so it doesnt get in the way
         bounds = colliderBounds.bounds;
         gameObject.GetComponent<Collider>().enabled = false;
+
+        m_resultRenderer = resultDisplay.GetComponent<Renderer>();
+        m_standardResultMat = m_resultRenderer.material;
 
         //sets up defender group
         m_DefenderGroup = new SimpleMultiAgentGroup();
@@ -83,6 +94,7 @@ public class CoOpVisionController : MonoBehaviour
         {
             m_DefenderGroup.GroupEpisodeInterrupted();
             m_AttackerGroup.GroupEpisodeInterrupted();
+            setVisualLog(m_standardResultMat);
             ResetScene();
         }
 
@@ -90,6 +102,10 @@ public class CoOpVisionController : MonoBehaviour
             //if the attackers are all gone,  then set status for defenders to 1
             int defendersSucceed = m_NumberOfRemainingAttackers <= 0 ? 1: -1;
 
+            if (defendersSucceed < 0)
+            {
+                setVisualLog(m_CoOpSettings.attackerWin);
+            }
             //if defenders succeed they get +1 and attackers get -1
             //if defenders fail they get -1 and attackers get +1
             m_DefenderGroup.AddGroupReward(defendersSucceed);
@@ -113,22 +129,35 @@ public class CoOpVisionController : MonoBehaviour
    //invoked by defenders upon collision with object
     public void Collision(Collider collider, Collider collided) {
         //if collide with wall attacker or defender, remove self
-         if (collided.tag == "Wall" || collided.tag == "Attacker" || collided.tag == "Defender")
+         if (collided.tag == CoOpVisionSettings.wallTag || collided.tag == CoOpVisionSettings.attackTag || collided.tag == CoOpVisionSettings.defendTag)
         {
+            //visual loggin system
+            if (collider.tag == CoOpVisionSettings.attackTag)
+            {
+                if (collided.tag == CoOpVisionSettings.defendTag)
+                {
+                    setVisualLog(m_CoOpSettings.defenderWin);
+                }
+                else
+                {
+                    setVisualLog(m_CoOpSettings.attackerCrash);
+                }
+            }
             Remove(collider);
         }
     }
+
 
     public void Remove(Collider collider)
     {
         GameObject obj = collider.gameObject;
 
         if (obj.activeSelf) {
-            if (collider.tag == "Attacker")
+            if (collider.tag == CoOpVisionSettings.attackTag)
             {
                 m_NumberOfRemainingAttackers --;
             }
-            else if (collider.tag == "Defender")
+            else if (collider.tag == CoOpVisionSettings.defendTag)
             {
                 m_NumberOfRemainingDefenders--;
             }
@@ -156,6 +185,11 @@ public class CoOpVisionController : MonoBehaviour
 
         }
         return randomSpawnPos;
+    }
+
+    private void setVisualLog(Material material)
+    {
+        m_resultRenderer.material = material;
     }
 
     public void ResetScene()
