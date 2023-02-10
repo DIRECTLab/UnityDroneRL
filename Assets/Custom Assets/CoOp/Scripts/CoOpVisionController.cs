@@ -187,7 +187,7 @@ public class CoOpVisionController : MonoBehaviour
             var randomPosZ = Random.Range(-bounds.extents.z * marginMultiplier, bounds.extents.z * marginMultiplier);
             randomSpawnPos = new Vector3(randomPosX, randomPosY, randomPosZ);
 
-            if (Physics.CheckBox(randomSpawnPos, new Vector3(1.5f, 1f, 1.5f), orientation: Quaternion.identity,  layerMask : (Physics.DefaultRaycastLayers << 3) ) == false)
+            if (Physics.CheckBox(randomSpawnPos, new Vector3(2.2f, .6f, 2.2f), orientation: Quaternion.identity,  layerMask : (Physics.DefaultRaycastLayers << 3) ) == false)
             {
                 foundNewSpawnLocation = true;
             }
@@ -248,7 +248,7 @@ public class CoOpVisionController : MonoBehaviour
         List<Attacker> attakers = new List<Attacker>();
         foreach (var attackerInfo in AttackerList) {
             var attacker = attackerInfo.Agent;
-            if (attacker.enabled) { 
+            if (attacker.isActiveAndEnabled) { 
                 attakers.Add(attacker);
             }
         }
@@ -260,7 +260,7 @@ public class CoOpVisionController : MonoBehaviour
         foreach (var defenderInfo in DefenderList)
         {
             var defender = defenderInfo.Agent;
-            if (defender.enabled)
+            if (defender.isActiveAndEnabled)
             {
                 defenders.Add(defender);
             }
