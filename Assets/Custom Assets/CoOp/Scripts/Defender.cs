@@ -10,20 +10,19 @@ using Unity.MLAgents.Sensors;
 public class Defender : Drone
 {
 
-    private CoOpVisionController cont;
     private BufferSensorComponent m_BufferSensor;
 
     private new void Awake()
     {
         base.Awake();
-        cont = GetComponentInParent<CoOpVisionController>();
         m_BufferSensor = GetComponent<BufferSensorComponent>();
         AdjustSpeed("defender_speed");
     }
 
     private void addDrone(Drone d) {
         Vector3 pos = utils.addNoise(d.transform.localPosition);
-
+        pos = cont.NormalizePoint(pos);
+/*        Debug.Log($"Position other: {pos}");*/        
         float[] floatPos = new float[4];
         floatPos[0] = pos.x;
         floatPos[1] = pos.y;
@@ -37,6 +36,9 @@ public class Defender : Drone
     {
         base.CollectObservations(sensor);
 
+        /*Vector3 pos = utils.addNoise(transform.localPosition);
+        pos = cont.NormalizePoint(pos);
+        Debug.Log($"\n\n\n\n\n\n\nPosition: {pos}");*/
 
         //5 observations overall
         // 1 hot encoding of state defender or attacker 
@@ -86,8 +88,8 @@ public class Defender : Drone
         {
             /*Debug.Log($"Shortest distance: {shortestDistance}");
             Debug.Log($"Shortest distance val: {-(shortestDistance / maxDistance)}");
-            Debug.Log($"Shortest angle: {shortestAngle}");
-            Debug.Log($"Shortest distance val: {utils.centerAngleWeight(shortestAngle, 30)}");*/
+            Debug.Log($"Shortest angle: {shortestAngle}");*/
+            Debug.Log($"Shortest distance val: {utils.centerAngleWeight(shortestAngle, 30)}");
             AddReward( -(shortestDistance / maxDistance) *.5f  /cont.MaxEnvironmentSteps);
             AddReward( utils.centerAngleWeight(shortestAngle, 30)* .5f / cont.MaxEnvironmentSteps);
         }

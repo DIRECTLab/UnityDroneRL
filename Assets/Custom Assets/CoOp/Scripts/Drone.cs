@@ -18,16 +18,21 @@ public class Drone : Agent
     protected Vector3 moveAmount;
     protected Quaternion rotateAmount;
 
+    protected CoOpVisionController cont;
+
     [System.Serializable]
     public class TriggerEvent : UnityEvent<Collider, Collider> { }
 
     [Header("Trigger Callbacks")]
     public TriggerEvent onTriggerEnterEvent = new TriggerEvent();
 
-   protected void Awake()
+
+
+    protected void Awake()
     {
         m_col = GetComponent<Collider>();
         m_rigidBody = GetComponent<Rigidbody>();
+        cont = GetComponentInParent<CoOpVisionController>();
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -37,7 +42,8 @@ public class Drone : Agent
 
         //position and rotation observations 4 overall
         //add noise to position observation
-        sensor.AddObservation(utils.addNoise(gameObject.transform.localPosition));
+
+        sensor.AddObservation(cont.NormalizePoint(utils.addNoise(gameObject.transform.localPosition)));
         sensor.AddObservation(gameObject.transform.rotation.y);
         //velocity observations 3 overall
         sensor.AddObservation(m_rigidBody.velocity);

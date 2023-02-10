@@ -44,7 +44,6 @@ public class CoOpVisionController : MonoBehaviour
     private int m_NumberOfRemainingAttackers;
     private SimpleMultiAgentGroup m_AttackerGroup;
 
-
     private CoOpVisionSettings m_CoOpSettings;
 
     //the max reset steps and the reset timer
@@ -147,7 +146,6 @@ public class CoOpVisionController : MonoBehaviour
         }
     }
 
-
     public void Remove(Collider collider)
     {
         GameObject obj = collider.gameObject;
@@ -163,6 +161,17 @@ public class CoOpVisionController : MonoBehaviour
             }
             obj.SetActive(false);
         }
+    }
+
+    private float normalizeDimension(float val, float extant) { 
+        return Mathf.Clamp(val, -extant, extant) / extant;
+    }
+
+    public Vector3 NormalizePoint(Vector3 point) { 
+        point.x = normalizeDimension(point.x, bounds.extents.x);
+        point.y = normalizeDimension(point.y - bounds.extents.y, bounds.extents.y);
+        point.z = normalizeDimension(point.z, bounds.extents.z);
+        return point;
     }
 
     //get a random spawn location inside the areas bounds
