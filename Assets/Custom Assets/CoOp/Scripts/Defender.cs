@@ -22,7 +22,8 @@ public class Defender : Drone
     private void addDrone(Drone d) {
         Vector3 pos = utils.addNoise(d.transform.localPosition);
         pos = cont.NormalizePoint(pos);
-/*        Debug.Log($"Position other: {pos}");*/        
+/*        Debug.Log($"Position other: {pos}");
+*/        
         float[] floatPos = new float[4];
         floatPos[0] = pos.x;
         floatPos[1] = pos.y;
@@ -56,7 +57,6 @@ public class Defender : Drone
                 Debug.Log("Me");
             }*/
         }
-
     }
 
     //punishes the defender for not seeing and being close to an attacker
@@ -64,7 +64,7 @@ public class Defender : Drone
     {
         base.FixedUpdate();
 
-        float shortestDistance = -1;
+       /* float shortestDistance = -1;
         float shortestAngle = -1;
 
         //gets the best distance and angle values
@@ -86,13 +86,13 @@ public class Defender : Drone
         float maxDistance = Vector3.Distance(cont.bounds.extents, -cont.bounds.extents);
         if (shortestAngle != -1 && shortestDistance != -1)
         {
-            /*Debug.Log($"Shortest distance: {shortestDistance}");
+            *//*Debug.Log($"Shortest distance: {shortestDistance}");
             Debug.Log($"Shortest distance val: {-(shortestDistance / maxDistance)}");
-            Debug.Log($"Shortest angle: {shortestAngle}");*/
-            Debug.Log($"Shortest distance val: {utils.centerAngleWeight(shortestAngle, 30)}");
+            Debug.Log($"Shortest angle: {shortestAngle}");
+            Debug.Log($"Shortest distance val: {utils.centerAngleWeight(shortestAngle, 30)}");*//*
             AddReward( -(shortestDistance / maxDistance) *.5f  /cont.MaxEnvironmentSteps);
             AddReward( utils.centerAngleWeight(shortestAngle, 30)* .5f / cont.MaxEnvironmentSteps);
-        }
+        }*/
     }
 
     public override void Heuristic(in ActionBuffers actionsOut)
@@ -107,12 +107,12 @@ public class Defender : Drone
     protected void OnTriggerEnter(Collider other)
     {
         //reward for colliding with atttacker
-        if (other.tag == CoOpVisionSettings.attackTag) { 
+        /*if (other.tag == CoOpVisionSettings.attackTag) { 
             AddReward(1); 
         }
 
         //punishment for running into the wall ot other defenders
-        else if (other.tag == CoOpVisionSettings.wallTag || other.tag == CoOpVisionSettings.defendTag) AddReward(-1);
+        else if (other.tag == CoOpVisionSettings.wallTag || other.tag == CoOpVisionSettings.defendTag) AddReward(-1);*/
 
         base.OnTriggerEnter(other);
 

@@ -16,6 +16,6 @@ public class Attacker : Drone
         base.FixedUpdate();
 
         //as long as the attacker is alive, reward it
-        AddReward(.25f);
+        //AddReward(.25f);
     }
 }

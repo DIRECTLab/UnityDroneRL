@@ -117,11 +117,11 @@ public class CoOpVisionController : MonoBehaviour
             ResetScene();
         }
 
-        //Hurry Up Penalty
+        /*//Hurry Up Penalty
         m_DefenderGroup.AddGroupReward(-0.25f / MaxEnvironmentSteps);
 
         //Stay Alive Reward
-        m_AttackerGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);
+        m_AttackerGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);*/
 
     }
 
