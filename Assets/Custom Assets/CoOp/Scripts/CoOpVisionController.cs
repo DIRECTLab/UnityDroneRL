@@ -38,9 +38,14 @@ public class CoOpVisionController : MonoBehaviour
     public Collider colliderBounds;
     [HideInInspector] public Bounds bounds;
 
+    private int m_maxDefenders;
     private int m_NumberOfRemainingDefenders;
     private SimpleMultiAgentGroup m_DefenderGroup;
 
+    private int m_defenderInterceptCount;
+    private int m_escapedAttackersCount;
+
+    private int m_maxAttackers;
     private int m_NumberOfRemainingAttackers;
     private SimpleMultiAgentGroup m_AttackerGroup;
 
@@ -89,37 +94,65 @@ public class CoOpVisionController : MonoBehaviour
         m_ResetTimer += 1;
 
         //if out of time
-        if ( (m_ResetTimer >= MaxEnvironmentSteps && MaxEnvironmentSteps > 0))
+        if ((m_ResetTimer >= MaxEnvironmentSteps && MaxEnvironmentSteps > 0))
         {
             m_DefenderGroup.GroupEpisodeInterrupted();
             m_AttackerGroup.GroupEpisodeInterrupted();
             setVisualLog(m_standardResultMat);
             ResetScene();
         }
-
-        if (m_NumberOfRemainingAttackers <= 0 || m_NumberOfRemainingDefenders <= 0) {
-            //if the attackers are all gone,  then set status for defenders to 1
-            int defendersSucceed = m_NumberOfRemainingAttackers <= 0 ? 1: -1;
-
-            if (defendersSucceed < 0)
-            {
-                setVisualLog(m_CoOpSettings.attackerWin);
-            }
-            //if defenders succeed they get +1 and attackers get -1
-            //if defenders fail they get -1 and attackers get +1
-            m_DefenderGroup.AddGroupReward(defendersSucceed);
-            m_AttackerGroup.AddGroupReward(-defendersSucceed);
-
+      /*  else if (m_escapedAttackersCount > 0) {
+            m_DefenderGroup.AddGroupReward(-1);
+            m_AttackerGroup.AddGroupReward(1);
 
             m_DefenderGroup.EndGroupEpisode();
             m_AttackerGroup.EndGroupEpisode();
+            ResetScene();
+        }*/
+        else if (m_NumberOfRemainingAttackers <= 0 || m_NumberOfRemainingDefenders <= 0)
+        {
 
+
+
+            int attackersReward;
+            int defendersReward;
+
+            //if attackers won
+            if (m_NumberOfRemainingAttackers > 0)
+            {
+                attackersReward = 1;
+                defendersReward = -1;
+                setVisualLog(m_CoOpSettings.attackerWin);
+            }
+            //if attackers lost
+            else
+            {
+                attackersReward = -1;
+
+                //if defenders intercepted the attackers
+                if (m_defenderInterceptCount == m_maxAttackers)
+                {
+                    defendersReward = 1;
+                    setVisualLog(m_CoOpSettings.defenderWin);
+                }
+                //if the attackers crashed on their own
+                else
+                {
+                    defendersReward = 0;
+                    setVisualLog(m_CoOpSettings.attackerCrash);
+                }
+            }
+
+            m_AttackerGroup.AddGroupReward(attackersReward);
+            m_DefenderGroup.AddGroupReward(defendersReward);
+
+            m_AttackerGroup.EndGroupEpisode();
+            m_DefenderGroup.EndGroupEpisode();
             ResetScene();
         }
 
         /*//Hurry Up Penalty
         m_DefenderGroup.AddGroupReward(-0.25f / MaxEnvironmentSteps);
-
         //Stay Alive Reward
         m_AttackerGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);*/
 
@@ -130,18 +163,11 @@ public class CoOpVisionController : MonoBehaviour
         //if collide with wall attacker or defender, remove self
          if (collided.tag == CoOpVisionSettings.wallTag || collided.tag == CoOpVisionSettings.attackTag || collided.tag == CoOpVisionSettings.defendTag)
         {
-            //visual loggin system
-            if (collider.tag == CoOpVisionSettings.attackTag)
+            if (collider.tag == CoOpVisionSettings.attackTag && collided.tag == CoOpVisionSettings.defendTag)
             {
-                if (collided.tag == CoOpVisionSettings.defendTag)
-                {
-                    setVisualLog(m_CoOpSettings.defenderWin);
-                }
-                else
-                {
-                    setVisualLog(m_CoOpSettings.attackerCrash);
-                }
+                m_defenderInterceptCount++;
             }
+
             Remove(collider);
         }
     }
@@ -204,8 +230,15 @@ public class CoOpVisionController : MonoBehaviour
     public void ResetScene()
     {
         m_ResetTimer = 0;
+
         m_NumberOfRemainingDefenders = DefenderList.Count;
+        m_maxDefenders = m_NumberOfRemainingDefenders;
+
+        m_defenderInterceptCount = 0;
+        m_escapedAttackersCount = 0;
+
         m_NumberOfRemainingAttackers = AttackerList.Count;
+        m_maxAttackers = m_NumberOfRemainingAttackers;
 
         foreach (var defender in DefenderList)
         {

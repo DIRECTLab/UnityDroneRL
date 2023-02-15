@@ -59,6 +59,10 @@ PrefabInstance:
       propertyPath: m_TargetDisplay
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5210285360560927390, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7556562852231993507, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
       propertyPath: m_Name
       value: Attacker
@@ -77,6 +81,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1089781911431018035, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+    - {fileID: 4811661618996390155, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
 --- !u!1 &8694663008562520377 stripped
 GameObject:
