@@ -31,6 +31,8 @@ public class CoOpVisionController : MonoBehaviour
     }
     public List<AttackerInfo> AttackerList = new List<AttackerInfo>();
 
+    public GameObject AttackerGoal;
+
     public GameObject resultDisplay;
     private Renderer m_resultRenderer;
     private Material m_standardResultMat;
@@ -54,6 +56,8 @@ public class CoOpVisionController : MonoBehaviour
     //the max reset steps and the reset timer
     [HideInInspector] public int MaxEnvironmentSteps;
     private int m_ResetTimer;
+
+    
 
     // Start is called before the first frame update
     void Start()
@@ -101,73 +105,84 @@ public class CoOpVisionController : MonoBehaviour
             setVisualLog(m_standardResultMat);
             ResetScene();
         }
-      /*  else if (m_escapedAttackersCount > 0) {
-            m_DefenderGroup.AddGroupReward(-1);
-            m_AttackerGroup.AddGroupReward(1);
 
-            m_DefenderGroup.EndGroupEpisode();
-            m_AttackerGroup.EndGroupEpisode();
-            ResetScene();
-        }*/
-        else if (m_NumberOfRemainingAttackers <= 0 || m_NumberOfRemainingDefenders <= 0)
+        
+        //if defenders intercepted the attackers
+        if (m_defenderInterceptCount > 0 && m_NumberOfRemainingAttackers <= 0)
         {
+            setVisualLog(m_CoOpSettings.defenderWin);
 
-
-
-            int attackersReward;
-            int defendersReward;
-
-            //if attackers won
-            if (m_NumberOfRemainingAttackers > 0)
-            {
-                attackersReward = 1;
-                defendersReward = -1;
-                setVisualLog(m_CoOpSettings.attackerWin);
-            }
-            //if attackers lost
-            else
-            {
-                attackersReward = -1;
-
-                //if defenders intercepted the attackers
-                if (m_defenderInterceptCount == m_maxAttackers)
-                {
-                    defendersReward = 1;
-                    setVisualLog(m_CoOpSettings.defenderWin);
-                }
-                //if the attackers crashed on their own
-                else
-                {
-                    defendersReward = 0;
-                    setVisualLog(m_CoOpSettings.attackerCrash);
-                }
-            }
-
-            m_AttackerGroup.AddGroupReward(attackersReward);
-            m_DefenderGroup.AddGroupReward(defendersReward);
-
+            m_AttackerGroup.AddGroupReward(0);
+            m_DefenderGroup.AddGroupReward(1);
             m_AttackerGroup.EndGroupEpisode();
             m_DefenderGroup.EndGroupEpisode();
             ResetScene();
         }
+        //if any attacker managed to escape
+        else if (m_escapedAttackersCount > 0)
+        {
+            setVisualLog(m_CoOpSettings.attackerWin);
 
-        /*//Hurry Up Penalty
-        m_DefenderGroup.AddGroupReward(-0.25f / MaxEnvironmentSteps);
+            m_AttackerGroup.AddGroupReward(1);
+            m_DefenderGroup.AddGroupReward(0);
+            m_AttackerGroup.EndGroupEpisode();
+            m_DefenderGroup.EndGroupEpisode();
+            ResetScene();
+        }
+        //if one side has completely crashed on their own
+        else if (m_NumberOfRemainingAttackers <= 0 || m_NumberOfRemainingDefenders <= 0)
+        {
+            setVisualLog(m_CoOpSettings.attackerCrash);
+
+            //for crashed teams call EndGroupEpisode, for surviving teams
+            //call end group episode
+            {
+                //if there are still attackers alive, then all the defenders crashed
+                if (m_NumberOfRemainingAttackers > 0)
+                {
+
+                    m_AttackerGroup.GroupEpisodeInterrupted();
+                    m_DefenderGroup.EndGroupEpisode();
+                }
+                //if there are still defenders alive, then all the attackers crashed
+                else if (m_NumberOfRemainingDefenders > 0)
+                {
+                    m_AttackerGroup.EndGroupEpisode();
+                    m_DefenderGroup.GroupEpisodeInterrupted();
+                }
+                //if both teams completely crashed
+                else
+                {
+                    m_AttackerGroup.EndGroupEpisode();
+                    m_DefenderGroup.EndGroupEpisode();
+                }
+            }
+            ResetScene();           
+        }
+
         //Stay Alive Reward
-        m_AttackerGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);*/
+        //m_DefenderGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);
+        //m_AttackerGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);
 
     }
 
    //invoked by defenders upon collision with object
     public void Collision(Collider collider, Collider collided) {
-        //if collide with wall attacker or defender, remove self
-         if (collided.tag == CoOpVisionSettings.wallTag || collided.tag == CoOpVisionSettings.attackTag || collided.tag == CoOpVisionSettings.defendTag)
+        //attacker collides with defender
+        if (collider.tag == CoOpVisionSettings.attackTag && collided.tag == CoOpVisionSettings.defendTag)
         {
-            if (collider.tag == CoOpVisionSettings.attackTag && collided.tag == CoOpVisionSettings.defendTag)
-            {
-                m_defenderInterceptCount++;
-            }
+            m_defenderInterceptCount++;
+        }
+        //if attacker collides with the goal
+        else if (collider.tag == CoOpVisionSettings.attackTag && collided.tag == CoOpVisionSettings.goaltag)
+        {
+            m_escapedAttackersCount++;
+        }
 
+        //if object collides with wall, attacker or defender
+        if (collided.tag == CoOpVisionSettings.wallTag || collided.tag == CoOpVisionSettings.attackTag || collided.tag == CoOpVisionSettings.defendTag)
+        {
+            
             Remove(collider);
         }
     }
@@ -275,6 +290,8 @@ public class CoOpVisionController : MonoBehaviour
                 m_AttackerGroup.RegisterAgent(attacker.Agent);
             }
         }
+
+        AttackerGoal.transform.localPosition = GetRandomSpawnPos();
     }
 
     public List<Attacker> GetAttackers() { 

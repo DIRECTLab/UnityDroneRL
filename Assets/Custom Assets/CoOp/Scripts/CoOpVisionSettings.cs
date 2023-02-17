@@ -8,6 +8,7 @@ public class CoOpVisionSettings : MonoBehaviour
     public const string wallTag = "Wall";
     public const string attackTag = "Attacker";
     public const string defendTag = "Defender";
+    public const string goaltag = "Goal";
 
     //the max reset steps and the reset timer
     public int MaxEnvironmentSteps = 25000;

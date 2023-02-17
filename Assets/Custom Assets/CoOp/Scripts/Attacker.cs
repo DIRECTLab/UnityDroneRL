@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using Unity.MLAgents;
+using Unity.MLAgents.Sensors;
 
 public class Attacker : Drone
 {
@@ -11,6 +12,17 @@ public class Attacker : Drone
         base.Awake();
         AdjustSpeed("attacker_speed");
     }
+
+    public override void CollectObservations(VectorSensor sensor)
+    {
+        base.CollectObservations(sensor);
+
+        var pos = utils.addNoise(cont.AttackerGoal.transform.localPosition);
+        pos = cont.NormalizePoint(pos);
+
+        sensor.AddObservation(pos);
+    }
+
     public new void FixedUpdate()
     {
         base.FixedUpdate();
