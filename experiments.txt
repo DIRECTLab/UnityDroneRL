@@ -1,4 +1,6 @@
-
+CoOpBetterSim - changed to be physics based, target tracking, commit a85711a
+CoOpBetterSim2 - bugfixes,  floor collision bad, local postiotions, punish 		distance, not reward closeness	
+CoOpBetterSim2TweakedReward - commit b7f1a0a, win for other side losing all 			drones, defenders penalized for existing being far from attackers and 			looking away from attackers, attackers rewarded for living, weight 		defender rewards by .5/maxsteps
 
 CoOpBetterSimNoCamera - removed camera for defenders, normalize position
 CoOpBetterSimNoCameraTweak - Simplified rewards,
