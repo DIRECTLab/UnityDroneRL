@@ -70,4 +70,4 @@ environment_parameters:
   defender_count: 3.0
   defender_speed: 1.0
   attacker_count: 1.0
-  attacker_speed: 1.5
+  attacker_speed: 1.0

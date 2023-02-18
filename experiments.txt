@@ -12,5 +12,4 @@ CoOpAttackerGoal - coop system with attacker targeting a goal, +1 upon win -1
 CoOpAttackerGoal2 - same as previous, but loses give 0, interupt only the non-			crashing team and end the episode for the crasher as it was their fault
 	(this model had attackers that learned to go to their goal) (18 learners) (started at 25,000,000) max steps then bumped to 50,000,000)
 smallLivingReward- same as CoOpAttackerGoal2 but with small living reward (29 learners)
-largerMaxRunStandard - same as CoOpAttackerGoal2 but max 50,000,000 steps (29 learners)
-
+largerMaxRunStandard - same as CoOpAttackerGoal2 but max 50,000,000 steps, also attackers match defender speed (29 learners)
