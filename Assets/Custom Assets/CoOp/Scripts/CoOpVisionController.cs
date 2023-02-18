@@ -159,8 +159,8 @@ public class CoOpVisionController : MonoBehaviour
         }
 
         //Stay Alive Reward
-        //m_DefenderGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);
-        //m_AttackerGroup.AddGroupReward(0.25f / MaxEnvironmentSteps);
+        m_DefenderGroup.AddGroupReward(0.001f);
+        m_AttackerGroup.AddGroupReward(0.001f);
 
     }
 
