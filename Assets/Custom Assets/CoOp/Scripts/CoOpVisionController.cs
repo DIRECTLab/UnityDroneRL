@@ -139,8 +139,28 @@ public class CoOpVisionController : MonoBehaviour
             //if there are still attackers alive, then all the defenders crashed
             if (m_NumberOfRemainingAttackers > 0)
             {
-                m_AttackerGroup.GroupEpisodeInterrupted();
-                m_DefenderGroup.EndGroupEpisode();
+                //if there are still attackers alive, then all the defenders crashed
+                if (m_NumberOfRemainingAttackers > 0)
+                {
+                    m_AttackerGroup.GroupEpisodeInterrupted();
+                    m_DefenderGroup.AddGroupReward(-1);
+                    m_DefenderGroup.EndGroupEpisode();
+                }
+                //if there are still defenders alive, then all the attackers crashed
+                else if (m_NumberOfRemainingDefenders > 0)
+                {
+                    m_AttackerGroup.AddGroupReward(-1);
+                    m_AttackerGroup.EndGroupEpisode();
+                    m_DefenderGroup.GroupEpisodeInterrupted();
+                }
+                //if both teams completely crashed
+                else
+                {
+                    m_AttackerGroup.AddGroupReward(-1);
+                    m_AttackerGroup.EndGroupEpisode();
+                    m_DefenderGroup.AddGroupReward(-1);
+                    m_DefenderGroup.EndGroupEpisode();
+                }
             }
             //if there are still defenders alive, then all the attackers crashed
             else if (m_NumberOfRemainingDefenders > 0)
