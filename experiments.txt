@@ -1,15 +1,17 @@
 CoOpBetterSim - changed to be physics based, target tracking, commit a85711a
-CoOpBetterSim2 - bugfixes,  floor collision bad, local postiotions, punish 			distance, not reward closeness	
-CoOpBetterSim2TweakedReward - commit b7f1a0a, win for other side losing all 			drones, defenders penalized for existing being far from attackers and 			looking away from attackers, attackers rewarded for living, weight 			defender rewards by .5/maxsteps
+CoOpBetterSim2 - bugfixes,  floor collision bad, local postiotions, punish distance, not reward closeness	
+CoOpBetterSim2TweakedReward - commit b7f1a0a, win for other side losing all drones, defenders penalized for existing being far from attackers and looking away from attackers, attackers rewarded for living, weight defender rewards by .5/maxsteps
 
 CoOpBetterSimNoCamera - removed camera for defenders, normalize position
 CoOpBetterSimNoCameraTweak - Simplified rewards,
-CoOpBetterSimNoCameraTweak2 - Simplified rewards, -1 1 (only based on survival or 		death of other side)
-CoOpBetterSimNoCameraTweak3 - rewards only -1 or 1 for win or loss (which side 			survived and made thier goal)
+CoOpBetterSimNoCameraTweak2 - Simplified rewards, -1 1 (only based on survival or death of other side)
+CoOpBetterSimNoCameraTweak3 - rewards only -1 or 1 for win or loss (which side survived and made thier goal)
 
-CoOpAttackerGoal - coop system with attacker targeting a goal, +1 upon win -1 
-	upon loss, interupt when one side crashes completely
-CoOpAttackerGoal2 - same as previous, but loses give 0, interupt only the non-			crashing team and end the episode for the crasher as it was their fault
-	(this model had attackers that learned to go to their goal) (18 learners) (started at 25,000,000) max steps then bumped to 50,000,000)
+CoOpAttackerGoal - coop system with attacker targeting a goal, +1 upon win -1 upon loss, interupt when one side crashes completely
+CoOpAttackerGoal2 - same as previous, but loses give 0, interupt only the non-crashing team and end the episode for the crasher as it was their fault (this model had attackers that learned to go to their goal) (18 learners) (started at 25,000,000) max steps then bumped to 50,000,000)
+
+work-tests
 smallLivingReward- same as CoOpAttackerGoal2 but with small living reward (29 learners)
-largerMaxRunStandard - same as CoOpAttackerGoal2 but max 50,000,000 steps, also attackers match defender speed (29 learners)
+largerMaxRunStandard - same as CoOpAttackerGoal2 but max 50,000,000 steps, also attackers match defender speed (this model had attackers that learned to go to their goal) (29 learners)
+crashBad- same asprev but crashing teams get a -1, (this model had attackers that learned to go to their goal) (29 learners)
+randomDefenderPos- same as prev, but with random defender start pos

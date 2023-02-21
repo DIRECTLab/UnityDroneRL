@@ -261,7 +261,7 @@ public class CoOpVisionController : MonoBehaviour
 
         foreach (var defender in DefenderList)
         {
-            var pos = defender.StartingPos;
+            var pos = GetRandomSpawnPos();
             var rot = defender.StartingRot;
 
             defender.Agent.transform.localPosition = pos;
