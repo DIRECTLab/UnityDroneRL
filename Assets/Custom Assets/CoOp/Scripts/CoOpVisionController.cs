@@ -139,39 +139,26 @@ public class CoOpVisionController : MonoBehaviour
             //if there are still attackers alive, then all the defenders crashed
             if (m_NumberOfRemainingAttackers > 0)
             {
-                //if there are still attackers alive, then all the defenders crashed
-                if (m_NumberOfRemainingAttackers > 0)
-                {
-                    m_AttackerGroup.GroupEpisodeInterrupted();
-                    m_DefenderGroup.AddGroupReward(-1);
-                    m_DefenderGroup.EndGroupEpisode();
-                }
-                //if there are still defenders alive, then all the attackers crashed
-                else if (m_NumberOfRemainingDefenders > 0)
-                {
-                    m_AttackerGroup.AddGroupReward(-1);
-                    m_AttackerGroup.EndGroupEpisode();
-                    m_DefenderGroup.GroupEpisodeInterrupted();
-                }
-                //if both teams completely crashed
-                else
-                {
-                    m_AttackerGroup.AddGroupReward(-1);
-                    m_AttackerGroup.EndGroupEpisode();
-                    m_DefenderGroup.AddGroupReward(-1);
-                    m_DefenderGroup.EndGroupEpisode();
-                }
+                m_AttackerGroup.GroupEpisodeInterrupted();
+
+                m_DefenderGroup.AddGroupReward(-1);
+                m_DefenderGroup.EndGroupEpisode();
             }
             //if there are still defenders alive, then all the attackers crashed
             else if (m_NumberOfRemainingDefenders > 0)
             {
+                m_AttackerGroup.AddGroupReward(-1);
                 m_AttackerGroup.EndGroupEpisode();
+
                 m_DefenderGroup.GroupEpisodeInterrupted();
             }
             //if both teams completely crashed
             else
             {
+                m_AttackerGroup.AddGroupReward(-1);
                 m_AttackerGroup.EndGroupEpisode();
+
+                m_DefenderGroup.AddGroupReward(-1);
                 m_DefenderGroup.EndGroupEpisode();
             }
 
@@ -199,8 +186,7 @@ public class CoOpVisionController : MonoBehaviour
 
         //if object collides with wall, attacker or defender
         if (collided.tag == CoOpVisionSettings.wallTag || collided.tag == CoOpVisionSettings.attackTag || collided.tag == CoOpVisionSettings.defendTag)
-        {
-            
+        {            
             Remove(collider);
         }
     }
@@ -322,6 +308,7 @@ public class CoOpVisionController : MonoBehaviour
         }
         return attakers;
     }
+   
     public List<Defender> GetDefenders()
     {
         List<Defender> defenders = new List<Defender>();
