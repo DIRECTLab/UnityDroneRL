@@ -130,33 +130,31 @@ public class CoOpVisionController : MonoBehaviour
             ResetScene();
         }
         //if one side has completely crashed on their own
+        //for crashed teams call EndGroupEpisode, for surviving teams
+        //call end group episode
         else if (m_NumberOfRemainingAttackers <= 0 || m_NumberOfRemainingDefenders <= 0)
         {
             setVisualLog(m_CoOpSettings.attackerCrash);
 
-            //for crashed teams call EndGroupEpisode, for surviving teams
-            //call end group episode
+            //if there are still attackers alive, then all the defenders crashed
+            if (m_NumberOfRemainingAttackers > 0)
             {
-                //if there are still attackers alive, then all the defenders crashed
-                if (m_NumberOfRemainingAttackers > 0)
-                {
-
-                    m_AttackerGroup.GroupEpisodeInterrupted();
-                    m_DefenderGroup.EndGroupEpisode();
-                }
-                //if there are still defenders alive, then all the attackers crashed
-                else if (m_NumberOfRemainingDefenders > 0)
-                {
-                    m_AttackerGroup.EndGroupEpisode();
-                    m_DefenderGroup.GroupEpisodeInterrupted();
-                }
-                //if both teams completely crashed
-                else
-                {
-                    m_AttackerGroup.EndGroupEpisode();
-                    m_DefenderGroup.EndGroupEpisode();
-                }
+                m_AttackerGroup.GroupEpisodeInterrupted();
+                m_DefenderGroup.EndGroupEpisode();
             }
+            //if there are still defenders alive, then all the attackers crashed
+            else if (m_NumberOfRemainingDefenders > 0)
+            {
+                m_AttackerGroup.EndGroupEpisode();
+                m_DefenderGroup.GroupEpisodeInterrupted();
+            }
+            //if both teams completely crashed
+            else
+            {
+                m_AttackerGroup.EndGroupEpisode();
+                m_DefenderGroup.EndGroupEpisode();
+            }
+
             ResetScene();           
         }
 
