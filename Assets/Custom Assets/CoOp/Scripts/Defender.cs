@@ -10,27 +10,25 @@ using Unity.MLAgents.Sensors;
 public class Defender : Drone
 {
 
-    private BufferSensorComponent m_BufferSensor;
+    public BufferSensorComponent m_BufferSensorAttack;
+    public BufferSensorComponent m_BufferSensorDefend;
 
     private new void Awake()
     {
         base.Awake();
-        m_BufferSensor = GetComponent<BufferSensorComponent>();
         AdjustSpeed("defender_speed");
     }
 
-    private void addDrone(Drone d) {
+    private void addDrone(Drone d, BufferSensorComponent b) {
         Vector3 pos = utils.addNoise(d.transform.localPosition);
         pos = cont.NormalizePoint(pos);
 /*        Debug.Log($"Position other: {pos}");
 */        
-        float[] floatPos = new float[4];
+        float[] floatPos = new float[3];
         floatPos[0] = pos.x;
         floatPos[1] = pos.y;
         floatPos[2] = pos.z;
-        floatPos[3] = d is Attacker? 1: 0; //if the drone is an attacker
-
-        m_BufferSensor.AppendObservation(floatPos);
+        b.AppendObservation(floatPos);
     }
 
     public override void CollectObservations(VectorSensor sensor)
@@ -46,16 +44,13 @@ public class Defender : Drone
         //position observations 3 overall
         foreach (Attacker attacker in cont.GetAttackers())
         {
-            addDrone(attacker);
+            addDrone(attacker, m_BufferSensorAttack);
         }
         foreach (Defender defender in cont.GetDefenders()) {
             if (this != defender)
             {
-                addDrone(defender);
+                addDrone(defender, m_BufferSensorDefend);
             }
-            /*else {
-                Debug.Log("Me");
-            }*/
         }
     }
 
