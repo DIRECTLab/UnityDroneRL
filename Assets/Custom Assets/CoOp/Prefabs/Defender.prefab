@@ -132,6 +132,10 @@ PrefabInstance:
       propertyPath: m_BehaviorName
       value: CoOpDefender
       objectReference: {fileID: 0}
+    - target: {fileID: 8022346004264190944, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
+      propertyPath: m_BrainParameters.VectorObservationSize
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1089781911431018035, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
     - {fileID: 4811661618996390155, guid: 41f015aa04d636144902d4f1432a8f7b, type: 3}
@@ -178,5 +182,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SensorName: BufferSensor
-  m_ObservableSize: 4
+  m_ObservableSize: 3
   m_MaxNumObservables: 5

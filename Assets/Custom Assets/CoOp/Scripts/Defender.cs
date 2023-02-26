@@ -24,11 +24,10 @@ public class Defender : Drone
         pos = cont.NormalizePoint(pos);
 /*        Debug.Log($"Position other: {pos}");
 */        
-        float[] floatPos = new float[4];
+        float[] floatPos = new float[3];
         floatPos[0] = pos.x;
         floatPos[1] = pos.y;
         floatPos[2] = pos.z;
-        floatPos[3] = d is Attacker? 1: 0; //if the drone is an attacker
 
         m_BufferSensor.AppendObservation(floatPos);
     }
@@ -44,10 +43,20 @@ public class Defender : Drone
         //5 observations overall
         // 1 hot encoding of state defender or attacker 
         //position observations 3 overall
-        foreach (Attacker attacker in cont.GetAttackers())
+        List<Attacker> attakers = cont.GetAttackers();
+        //if attacker add attackers normalized noise added pos
+        if (attakers.Count > 0)
         {
-            addDrone(attacker);
+            sensor.AddObservation(cont.NormalizePoint(utils.addNoise(attakers[0].transform.localPosition)));
         }
+        //else pad with zeros
+        else
+        {
+            float[] floatPos = new float[3];
+            sensor.AddObservation(floatPos);
+        }
+
+        //add defenders to buffer
         foreach (Defender defender in cont.GetDefenders()) {
             if (this != defender)
             {
