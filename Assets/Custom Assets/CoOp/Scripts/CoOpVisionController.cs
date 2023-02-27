@@ -226,7 +226,7 @@ public class CoOpVisionController : MonoBehaviour
             var randomPosZ = Random.Range(-bounds.extents.z * marginMultiplier, bounds.extents.z * marginMultiplier);
             randomSpawnPos = new Vector3(randomPosX, randomPosY, randomPosZ);
 
-            if (Physics.CheckBox(randomSpawnPos, new Vector3(2.2f, .6f, 2.2f), orientation: Quaternion.identity,  layerMask : (Physics.DefaultRaycastLayers << 3) ) == false)
+            if (Physics.CheckBox(randomSpawnPos, new Vector3(2.2f, 1f, 2.2f), orientation: Quaternion.identity,  layerMask : (Physics.DefaultRaycastLayers << 3) ) == false)
             {
                 foundNewSpawnLocation = true;
             }
