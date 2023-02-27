@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 3445831775905237260}
   - component: {fileID: 7005171268740405495}
   - component: {fileID: 7402574442743706530}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: VisionCo-Op
   m_TagString: Untagged
   m_Icon: {fileID: 0}
