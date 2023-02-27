@@ -11,3 +11,5 @@ CoOpAttackerGoal - coop system with attacker targeting a goal, +1 upon win -1
 	upon loss, interupt when one side crashes completely
 CoOpAttackerGoal2 - same as previous, but loses give 0, interupt only the non-			crashing team and end the episode for the crasher as it was their fault
 	(this model had attackers that learned to go to their goal)
+randomDefenderPos: test with randomized defender positions
+doubleBufferSensor: test with 2 buffer senors, one for defenders, one for attackers
