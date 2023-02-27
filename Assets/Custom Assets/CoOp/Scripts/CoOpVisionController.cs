@@ -226,7 +226,7 @@ public class CoOpVisionController : MonoBehaviour
             var randomPosZ = Random.Range(-bounds.extents.z * marginMultiplier, bounds.extents.z * marginMultiplier);
             randomSpawnPos = new Vector3(randomPosX, randomPosY, randomPosZ);
 
-            if (Physics.CheckBox(randomSpawnPos, new Vector3(2.2f, 1f, 2.2f), orientation: Quaternion.identity,  layerMask : (Physics.DefaultRaycastLayers << 3) ) == false)
+            if (Physics.CheckBox(randomSpawnPos, new Vector3(2.2f, 1f, 2.2f), orientation: Quaternion.identity ) == false)
             {
                 foundNewSpawnLocation = true;
             }
@@ -261,6 +261,7 @@ public class CoOpVisionController : MonoBehaviour
             defender.Agent.transform.localPosition = pos;
             defender.Agent.transform.localRotation = rot;
 
+            defender.Rb.position = defender.Agent.transform.localPosition;
             defender.Rb.velocity = Vector3.zero;
             defender.Rb.angularVelocity = Vector3.zero;
 
@@ -279,6 +280,7 @@ public class CoOpVisionController : MonoBehaviour
             attacker.Agent.transform.localPosition = pos;
             attacker.Agent.transform.localRotation = rot;
 
+            attacker.Rb.position = attacker.Agent.transform.localPosition;
             attacker.Rb.velocity = Vector3.zero;
             attacker.Rb.angularVelocity = Vector3.zero;
 
