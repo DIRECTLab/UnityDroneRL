@@ -261,7 +261,7 @@ public class CoOpVisionController : MonoBehaviour
             defender.Agent.transform.localPosition = pos;
             defender.Agent.transform.localRotation = rot;
 
-            defender.Rb.position = defender.Agent.transform.localPosition;
+            defender.Rb.position = defender.Agent.transform.position;
             defender.Rb.velocity = Vector3.zero;
             defender.Rb.angularVelocity = Vector3.zero;
 
@@ -280,7 +280,7 @@ public class CoOpVisionController : MonoBehaviour
             attacker.Agent.transform.localPosition = pos;
             attacker.Agent.transform.localRotation = rot;
 
-            attacker.Rb.position = attacker.Agent.transform.localPosition;
+            attacker.Rb.position = attacker.Agent.transform.position;
             attacker.Rb.velocity = Vector3.zero;
             attacker.Rb.angularVelocity = Vector3.zero;
 
