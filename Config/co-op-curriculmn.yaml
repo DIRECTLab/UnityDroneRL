@@ -71,4 +71,23 @@ environment_parameters:
   defender_count: 3.0
   attacker_count: 1.0
   defender_speed: 1.0
-  attacker_speed: .1
+  attacker_speed:
+    curriculum:
+      - name: AttackerLearn # The '-' is important as this is a list
+        completion_criteria:
+          measure: reward
+          behavior: CoOpAttacker
+          signal_smoothing: true
+          min_lesson_length: 10
+          threshold: 0.75
+        value: 1.5
+      - name: AttackerSlow # The '-' is important as this is a list
+        completion_criteria:
+          measure: reward
+          behavior: CoOpDefender
+          signal_smoothing: true
+          min_lesson_length: 10
+          threshold: 0.5
+        value: .1
+      - name: Improve
+        value: 1.5

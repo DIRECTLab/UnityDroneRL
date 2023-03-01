@@ -9,6 +9,9 @@ CoOpBetterSimNoCameraTweak3 - rewards only -1 or 1 for win or loss (which side s
 
 CoOpAttackerGoal - coop system with attacker targeting a goal, +1 upon win -1 upon loss, interupt when one side crashes completely
 CoOpAttackerGoal2 - same as previous, but loses give 0, interupt only the non-crashing team and end the episode for the crasher as it was their fault (this model had attackers that learned to go to their goal)
+CoOpAttackerGoalPretrained: test same as prev with pretrained attacker models
+CoOpAttackerGoalPretrainedCurcZeroSpeed: test same as prev with 0 speed pretrained attackers
+standardAttackerEncoding: test same as prev but with attackers encoded normally buffer sensors only hold defenders
 
 work-tests
 	smallLivingReward- same as CoOpAttackerGoal2 but with small living reward (29 learners)

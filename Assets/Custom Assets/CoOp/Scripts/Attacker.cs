@@ -30,4 +30,14 @@ public class Attacker : Drone
         //as long as the attacker is alive, reward it
         //AddReward(.25f);
     }
+
+    new protected void OnTriggerEnter(Collider other)
+    {
+        //reward for escaping
+        if (other.tag == CoOpVisionSettings.goaltag) AddReward(1);
+        //punishment for running into the walls
+        else if (other.tag == CoOpVisionSettings.wallTag) AddReward(-1);
+
+        base.OnTriggerEnter(other);
+    }
 }

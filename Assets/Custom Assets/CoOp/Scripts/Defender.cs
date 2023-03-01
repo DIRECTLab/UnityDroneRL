@@ -113,18 +113,14 @@ public class Defender : Drone
         continuousActionsOut[0] = Input.GetAxisRaw("Horizontal");
     }
 
-    protected void OnTriggerEnter(Collider other)
+    new protected void OnTriggerEnter(Collider other)
     {
         //reward for colliding with atttacker
-        /*if (other.tag == CoOpVisionSettings.attackTag) { 
-            AddReward(1); 
-        }
-
+        if (other.tag == CoOpVisionSettings.attackTag) AddReward(1);
         //punishment for running into the wall ot other defenders
-        else if (other.tag == CoOpVisionSettings.wallTag || other.tag == CoOpVisionSettings.defendTag) AddReward(-1);*/
+        else if (other.tag == CoOpVisionSettings.wallTag || other.tag == CoOpVisionSettings.defendTag) AddReward(-1);
 
         base.OnTriggerEnter(other);
-
     }
 }
    
