@@ -23,15 +23,16 @@ behaviors:
     keep_checkpoints: 5
     max_steps: 50000000
     time_horizon: 64
-    summary_freq: 60000
+    summary_freq: 100000
 
     # self-play
     self_play:
       window: 10
       play_against_latest_model_ratio: 0.5
       save_steps: 20000
-      swap_steps: 10000
       team_change: 100000
+      #swap steps should be (teamsize / other_teamsize) * (teamchange / number_swaps_wanted)
+      swap_steps: 10000
 
   CoOpAttacker:
     trainer_type: poca
@@ -57,15 +58,16 @@ behaviors:
     keep_checkpoints: 5
     max_steps: 50000000
     time_horizon: 64
-    summary_freq: 60000
+    summary_freq: 100000
 
-    # self-play
+    # self-play 
     self_play:
       window: 10
       play_against_latest_model_ratio: 0.5
-      save_steps: 100000
-      swap_steps: 2000
+      save_steps: 20000
       team_change: 100000
+      #swap steps should be (teamsize / other_teamsize) * (teamchange / number_swaps_wanted)
+      swap_steps: 2000
 
 environment_parameters:
   defender_count: 3.0
@@ -79,7 +81,7 @@ environment_parameters:
           behavior: CoOpAttacker
           signal_smoothing: true
           min_lesson_length: 10
-          threshold: 0.75
+          threshold: 0.5
         value: 1.5
       - name: AttackerSlow # The '-' is important as this is a list
         completion_criteria:

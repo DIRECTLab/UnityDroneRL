@@ -23,3 +23,4 @@ work-tests
 
 standardattackerencoding - attacker encoded standardly, attacker learned to reach goal
 standardattackerencodingSlow- started from prev as base, with attacker speed dropped to .1
+standardAttackerEncodingCurriculmn - start of curriculmn learning test
